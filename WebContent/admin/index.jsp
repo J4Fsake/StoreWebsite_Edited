@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<script src="https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.1/lib/index.min.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,21 @@
     <link rel="stylesheet" type="text/css" href="../css/custom_background_template.css"/>
 </head>
 <body>
+<div id="webchat"></div>
+    <script>
+        window.WebChat.default({
+            selector: "#webchat",
+            initPayload: "/greet",
+            socketUrl: "http://localhost:5006",
+            socketPath: "/socket.io/",
+            title: "E-commerce Assistant",
+            subtitle: "Admin Section",
+            params: {"storage": "session",
+                "showChatOnLoad": false},
+            // customData: { sender_id: "admin_" + Date.now() },
+        });
+    </script>
+
     <jsp:directive.include file="header.jsp"/>
     <div class="background-div-content">
         <div class="container mt-5">

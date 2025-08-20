@@ -6,7 +6,7 @@
     <style>
         #chat-button {
             position: fixed;
-            bottom: 20px;
+            bottom: 100px;
             right: 20px;
             width: 60px;
             height: 60px;
@@ -36,7 +36,7 @@
         #chat-box {
             display: none;
             position: fixed;
-            bottom: 90px;
+            bottom: 170px;
             right: 20px;
             width: 320px;
             height: 400px;

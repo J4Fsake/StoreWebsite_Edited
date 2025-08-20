@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<script src="https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.1/lib/index.min.js"></script>
 <html>
 <head>
     <title>PHK Shirts Store</title>
@@ -17,6 +18,20 @@
     <link rel="stylesheet" type="text/css" href="css/pageLoadCustomer.css"/>
 </head>
 <body>
+    <div id="webchat"></div>
+    <script>
+        window.WebChat.default({
+            selector: "#webchat",
+            initPayload: "/greet",
+            socketUrl: "http://localhost:5005",
+            socketPath: "/socket.io/",
+            title: "E-commerce Assistant",
+            subtitle: "Customer Section",
+            params: {"storage": "session",
+                "showChatOnLoad": false},
+        });
+    </script>
+
 <jsp:directive.include file="header.jsp"/>
 
 
