@@ -19,6 +19,29 @@
 <body>
 <jsp:directive.include file="header.jsp"/>
 
+
+<c:if test="${not empty loggedCustomer}">
+    <div class="background-div-content">
+        <div class="container mb-5">
+            <!-- New Shoes Section -->
+            <div class="row custom-row mb-5 w-auto justify-content-center mt-5" style="width: max-content">
+                <div class="col text-center">
+                    <h2 class="display-4 custom-underscore" style="font-family: 'Merriweather', serif">
+                        <b>Recommend For You</b>
+                    </h2>
+                </div>
+            </div>
+            <div class="row justify-content-center mb-5 border custom-border">
+                <c:forEach var="product" items="${recommendList}">
+                    <div class="col-md-4 mt-5">
+                        <jsp:directive.include file="product_recommend.jsp"/>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+</c:if>
+
 <!-- Main Container -->
 <div class="background-div-content">
     <div class="container mb-5">

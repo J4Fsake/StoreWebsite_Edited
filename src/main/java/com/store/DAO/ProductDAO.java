@@ -5,7 +5,9 @@ import com.store.Entity.Product;
 import com.store.Mapper.ProductMapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductDAO extends JPADAO<Product> implements GenericDAO<Product> {
     public ProductDAO() {}
@@ -107,5 +109,34 @@ public class ProductDAO extends JPADAO<Product> implements GenericDAO<Product> {
 
     public List<Product> listByCategoryId(Integer categoryId) {
         return super.findWithNamedQuery("Product.listByCategoryId", "categoryId", categoryId);
+    }
+
+    public List<Product> getByIds(List<Integer> ids) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+
+        return super.findWithNamedQuery("Product.getByIds", params);
+    }
+
+    public List<Product> search(String keyword) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+
+        return super.findWithNamedQuery("Product.search", params);
+    }
+
+    public List<Product> loadIdAndName() {
+        List<Object[]> results = super.findWithNamedQueryObjects("Product.loadIdAndName");
+
+        List<Product> products = new ArrayList<>();
+        for (Object[] elements : results) {
+            Product product = new Product();
+            product.setId((Integer) elements[0]);
+            product.setName((String) elements[1]);
+
+            products.add(product);
+        }
+
+        return products;
     }
 }

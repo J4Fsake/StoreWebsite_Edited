@@ -2,7 +2,9 @@ package com.store.DAO;
 
 import com.store.Entity.Import;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ImportDAO extends JPADAO<Import> implements GenericDAO<Import>{
     @Override
@@ -30,5 +32,12 @@ public class ImportDAO extends JPADAO<Import> implements GenericDAO<Import>{
 
     public Import getReference(String importId) {
         return super.find(Import.class, importId);
+    }
+
+    public List<Import> searchById(String id) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+
+        return super.findWithNamedQuery("Import.searchById", params);
     }
 }

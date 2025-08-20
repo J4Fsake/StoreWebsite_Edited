@@ -1,11 +1,27 @@
 package Constant;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class IconstantFacebook {
-        public static final String FACEBOOK_CLIENT_ID = "8898839156821098";
-        public static final String FACEBOOK_CLIENT_SECRET = "e1f5c934a25aa33560ed2af6932ab4ce";
-        public static final String FACEBOOK_REDIRECT_URI = "http://localhost:9999/StoreWebsite/login";
-        public static final String FACEBOOK_LINK_GET_TOKEN = "https://graph.facebook.com/v21.0/oauth/access_token";
-        public static final String FACEBOOK_LINK_GET_USER_INFO = "https://graph.facebook.com/me?fields=id,name,email,picture&access_token=";
-    }
+        private static Properties props = new Properties();
+
+        static {
+                try {
+                        FileInputStream fis = new FileInputStream(".env");
+                        props.load(fis);
+                        fis.close();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+        }
+
+        public static final String FACEBOOK_CLIENT_ID = props.getProperty("FACEBOOK_CLIENT_ID");
+        public static final String FACEBOOK_CLIENT_SECRET = props.getProperty("FACEBOOK_CLIENT_SECRET");
+        public static final String FACEBOOK_REDIRECT_URI = props.getProperty("FACEBOOK_REDIRECT_URI");
+        public static final String FACEBOOK_LINK_GET_TOKEN = props.getProperty("FACEBOOK_LINK_GET_TOKEN");
+        public static final String FACEBOOK_LINK_GET_USER_INFO = props.getProperty("FACEBOOK_LINK_GET_USER_INFO");
+}
 
 

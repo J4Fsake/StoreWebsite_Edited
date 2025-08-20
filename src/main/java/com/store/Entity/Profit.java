@@ -10,6 +10,19 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "Profit.listAll", query = "SELECT p FROM Profit p")
 })
+@NamedStoredProcedureQuery(
+        name = "Profit.viewReport",
+        procedureName = "view_profit_report",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "filter_value", type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "category_name", type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "start_date", type = java.sql.Date.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "end_date", type = java.sql.Date.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "report_type", type = String.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "product_id", type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "step", type = Integer.class)
+        }
+)
 public class Profit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

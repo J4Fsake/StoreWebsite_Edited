@@ -4,6 +4,7 @@ import com.store.DAO.ProductDAO;
 import com.store.DTO.ProductDTO;
 import com.store.Entity.Product;
 import com.store.Mapper.ProductMapper;
+import com.store.Service.ProductService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,6 +31,9 @@ public class HomePageServlet extends HttpServlet {
 		request.setAttribute("listNewShirts", listNewShirts);
 		request.setAttribute("listBestSellingProducts", listBestSellingProducts);
 		request.setAttribute("listMostFavoredProducts", listMostFavoredProducts);
+
+		ProductService productService = new ProductService(request, response);
+		productService.getRecommendProducts();
 		
 		String homePage = "frontend/index.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(homePage);

@@ -29,13 +29,16 @@ public class CustomerGoogleLogin {
                 .returnContent();
 
         String responseString = content.asString();
+        System.out.println("Response: " + responseString);
 
         // Chuyển đổi phản hồi JSON sử dụng org.json
         JSONObject jsonObj = new JSONObject(responseString);
 
         if (jsonObj.has("access_token")) {
-            return jsonObj.getString("access_token");
+            String accessToken = jsonObj.getString("access_token");
+            return accessToken;
         } else {
+            System.out.println("No access_token found in response.");
             return null;
         }
     }

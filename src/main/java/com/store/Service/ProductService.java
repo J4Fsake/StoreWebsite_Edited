@@ -2,26 +2,33 @@ package com.store.Service;
 
 import Constant.Iconstant;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.store.DAO.CategoryDAO;
 import com.store.DAO.ProductDAO;
 import com.store.DAO.ProductTagDAO;
 import com.store.DAO.TagDAO;
 import com.store.DTO.CategoryDTO;
 import com.store.DTO.ProductDTO;
+import com.store.Entity.Customer;
 import com.store.Entity.Product;
 import com.store.Entity.ProductTag;
 import com.store.Entity.Tag;
 import com.store.Mapper.CategoryMapper;
 import com.store.Mapper.ProductMapper;
+import org.json.JSONArray;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
@@ -200,7 +207,7 @@ public class ProductService {
     }
 
     public void getAllProduct() throws IOException {
-        List<ProductDTO> result = ProductMapper.INSTANCE.getProductDTOWithIdAndNameList(productDAO.listAll());
+        List<ProductDTO> result = ProductMapper.INSTANCE.toDTO(productDAO.loadIdAndName());
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -280,11 +287,94 @@ public class ProductService {
         int productId = Integer.parseInt(request.getParameter("id"));
 
         ProductDTO product = ProductMapper.INSTANCE.toDTO(productDAO.get(productId));
+        List<ProductDTO> relevantList = getListRelevantProductId(productId);
 
         request.setAttribute("product", product);
+        request.setAttribute("relevantList", relevantList);
 
         String path = "frontend/product_detail.jsp";
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
         requestDispatcher.forward(request, response);
+    }
+
+    private List<ProductDTO> getListRelevantProductId(Integer productId) throws IOException {
+        String api = "http://127.0.0.1:8000/recommendations/relevant/" + productId + "?top_k=6";
+
+        List<Integer> rcList = fetchProductIds(api);
+
+        return ProductMapper.INSTANCE.toDTO(productDAO.getByIds(rcList));
+    }
+
+    public void search() throws ServletException, IOException {
+        String keyword = request.getParameter("keyword");
+
+        List<ProductDTO> products = ProductMapper.INSTANCE.toDTO(productDAO.search(keyword));
+
+        request.setAttribute("productList", products);
+        request.setAttribute("keyword", keyword);
+
+        String path = "frontend/view_products.jsp";
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
+        requestDispatcher.forward(request, response);
+    }
+
+    public void getRecommendProducts() throws IOException {
+        Customer customer = (Customer) request.getSession().getAttribute("loggedCustomer");
+
+        if (customer == null) return;
+
+        List<Integer> productIds = getRecommendProductIds(customer.getId());
+
+        List<ProductDTO> productList;
+
+        if (productIds.isEmpty()) {
+            productList = productDAO.listMostFavoredProducts();
+        } else {
+            productList = ProductMapper.INSTANCE.toDTO(productDAO.getByIds(productIds));
+        }
+
+        request.setAttribute("recommendList", productList);
+    }
+
+    private List<Integer> getRecommendProductIds(int customerId) throws IOException {
+        String api1 = "http://127.0.0.1:8000/recommendations/content-based/" + customerId + "?top_k=4";
+        String api2 = "http://127.0.0.1:8000/recommendations/collaborative/item-item/" + customerId + "?top_k=5";
+
+        List<Integer> cbList = fetchProductIds(api1);
+        List<Integer> cfList = fetchProductIds(api2);
+
+        Set<Integer> uniqueProductIds = new LinkedHashSet<>();
+        uniqueProductIds.addAll(cbList);
+        uniqueProductIds.addAll(cfList);
+
+        return new ArrayList<>(uniqueProductIds);
+    }
+
+
+    private List<Integer> fetchProductIds(String apiUrl) throws IOException {
+        URL url = new URL(apiUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/json");
+
+        if (conn.getResponseCode() != 200) {
+            throw new RuntimeException("HTTP GET Request Failed with Error code : " + conn.getResponseCode());
+        }
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder output = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            output.append(line);
+        }
+        conn.disconnect();
+
+        JSONArray arr = new JSONArray(output.toString());
+        List<Integer> ids = new ArrayList<>();
+        for (int i = 0; i < arr.length(); i++) {
+            ids.add(arr.getInt(i));
+        }
+
+        return ids;
     }
 }

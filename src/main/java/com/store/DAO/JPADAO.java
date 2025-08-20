@@ -261,4 +261,20 @@ public class JPADAO<E> {
         entityManager.close();
         return reference;
     }
+
+    public List<Object[]> callStoredProcedure(String procedureName, Map<String, Object> parameters) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            StoredProcedureQuery spQuery = entityManager.createNamedStoredProcedureQuery(procedureName);
+
+            for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+                spQuery.setParameter(entry.getKey(), entry.getValue());
+            }
+
+            return spQuery.getResultList();
+        } finally {
+            entityManager.close();
+        }
+    }
+
 }

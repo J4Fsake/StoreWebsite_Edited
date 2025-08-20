@@ -101,4 +101,11 @@ public class ProductVariantDAO extends JPADAO<ProductVariant> implements Generic
 
         return mapToProductId;
     }
+
+    public List<ProductVariant> searchByProductId(Integer productId) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("id", productId);
+
+        return super.findWithNamedQuery("ProductVariant.searchByProductId", parameters);
+    }
 }

@@ -5,15 +5,18 @@ import com.store.DAO.WarehouseDAO;
 import com.store.DTO.ProductDTO;
 import com.store.DTO.WarehouseDTO;
 import com.store.DTO.WarehouseSummary;
+import com.store.Entity.Warehouse;
 import com.store.Mapper.ProductMapper;
 import com.store.Mapper.WarehouseMapper;
 import com.store.Mapper.WarehouseMapperUtil;
+import com.store.Validation.Validation;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WarehouseService {
@@ -42,12 +45,32 @@ public class WarehouseService {
     public void viewDetailWarehouse() throws ServletException, IOException {
         Integer productId = Integer.valueOf(request.getParameter("id"));
         List<WarehouseDTO> warehouses = WarehouseMapper.INSTANCE.toDTOList(warehouseDAO.findByProductId(productId));
-        ProductDTO product = ProductMapper.INSTANCE.getProductDTOWithIdAndName(productDAO.get(productId));
+        ProductDTO product = ProductMapper.INSTANCE.toDTO(productDAO.get(productId));
 
         request.setAttribute("product", product);
         request.setAttribute("warehouseList", warehouses);
 
         String path = "warehouse_detail.jsp";
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
+        requestDispatcher.forward(request, response);
+    }
+
+    public void stockSearch() throws ServletException, IOException {
+        String keyword = request.getParameter("query");
+
+        List<Warehouse> listWarehouse = new ArrayList<>();
+
+        if (Validation.isNumeric(keyword)) {
+            listWarehouse = warehouseDAO.searchByProductId(Integer.valueOf(keyword));
+        } else {
+            listWarehouse = warehouseDAO.searchByName(keyword);
+        }
+
+        List<WarehouseSummary> summaryList = WarehouseMapperUtil.toSummaryList(listWarehouse);
+
+        request.setAttribute("warehouseList", summaryList);
+
+        String path = "warehouse_list.jsp";
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
         requestDispatcher.forward(request, response);
     }

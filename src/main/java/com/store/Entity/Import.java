@@ -7,7 +7,8 @@ import java.util.Date;
 @Entity
 @Table(name = "imports")
 @NamedQueries({
-        @NamedQuery(name = "Import.findAll", query = "SELECT i FROM Import i")
+        @NamedQuery(name = "Import.findAll", query = "SELECT i FROM Import i"),
+        @NamedQuery(name = "Import.searchById", query = "SELECT i FROM Import i WHERE i.id = :id")
 })
 public class Import {
     @Id

@@ -46,10 +46,6 @@ public class AdminHomePageServlet extends HttpServlet {
 		//Đếm số lượng áo có trong database
 		ProductDAO productDAO = new ProductDAO();
 		long totalShirts = productDAO.count();
-		List<String>soldShirtName = productDAO.listSoldProductName();
-		List<Integer>eachShirtRevenue = productDAO.listEachProductRevenue();
-
-		List<Integer>shirtsByTypes = productDAO.countGroupedByCategory();
 
 		//Đếm số lượng khách hàng có trong database
 		CustomerDAO customerDAO = new CustomerDAO();
@@ -76,10 +72,6 @@ public class AdminHomePageServlet extends HttpServlet {
 
 		request.setAttribute("totalUsers", totalUsers);
 		request.setAttribute("totalShirts", totalShirts);
-
-		request.setAttribute("shirtsByTypes", shirtsByTypes);
-		request.setAttribute("soldShirtName", soldShirtName);
-		request.setAttribute("eachShirtRevenue", eachShirtRevenue);
 
 		request.setAttribute("totalCustomers", totalCustomers);
 		request.setAttribute("totalTypes", totalTypes);

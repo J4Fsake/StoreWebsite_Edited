@@ -110,7 +110,7 @@
 
                     <div id="social-login">
                         <div class="row mt-3">
-                            <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/StoreWebsite/login&response_type=code&client_id=734161680008-sol644a9hji09b12fe6hiev3p4f7cg74.apps.googleusercontent.com&approval_prompt=force&state=provider=google"
+                            <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:9999/StoreWebsite/login&response_type=code&client_id=633529606659-e1v70t8etd167p3n6b79emu5r9t5tu22.apps.googleusercontent.com&approval_prompt=force&state=provider=google"
                                class="btn btn-lg btn-danger btn-custom">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-google" viewBox="0 0 16 16">
@@ -121,7 +121,7 @@
                         </div>
 
                         <div class="row mt-3">
-                            <a href="https://www.facebook.com/v21.0/dialog/oauth?client_id=8898839156821098&redirect_uri=http://localhost:9999/ShirtStoreWebsite/login&state=provider=facebook&scope=email"
+                            <a href="https://www.facebook.com/v21.0/dialog/oauth?client_id=8898839156821098&redirect_uri=http://localhost:9999/StoreWebsite/login&state=provider=facebook&scope=email"
                                class="btn btn-lg btn-primary btn-custom">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-facebook" viewBox="0 0 16 16">

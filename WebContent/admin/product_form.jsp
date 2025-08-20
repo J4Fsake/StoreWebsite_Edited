@@ -252,7 +252,7 @@
                 }
 
                 const formData = new FormData();
-                formData.append("id", productId);
+                formData.append("productId", productId);
                 formData.append("category", category);
                 formData.append("name", name);
                 formData.append("brand", brand);

@@ -28,7 +28,8 @@ import java.math.BigDecimal;
                 query = "SELECT p FROM ProductVariant p " +
                         "WHERE p.size.id = :attributeId OR p.color.id = :attributeId OR p.material.id = :attributeId"),
 
-        @NamedQuery(name = "ProductVariant.loadMapToProductId", query = "SELECT pv.id, pv.product.id FROM ProductVariant pv")
+        @NamedQuery(name = "ProductVariant.loadMapToProductId", query = "SELECT pv.id, pv.product.id FROM ProductVariant pv"),
+        @NamedQuery(name = "ProductVariant.searchByProductId", query = "SELECT pv FROM ProductVariant pv WHERE pv.product.id = :id")
 })
 public class ProductVariant {
     @Id

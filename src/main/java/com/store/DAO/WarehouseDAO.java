@@ -60,4 +60,17 @@ public class WarehouseDAO extends JPADAO<Warehouse> implements GenericDAO<Wareho
         params.put("ids", variantIds);
         return super.findWithNamedQuery("Warehouse.findByVariantIds", params);
     }
+
+    public List<Warehouse> searchByName(String name) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", name);
+        return super.findWithNamedQuery("Warehouse.searchByName", params);
+    }
+
+    public List<Warehouse> searchByProductId(Integer productId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+
+        return super.findWithNamedQuery("Warehouse.searchByProductId", params);
+    }
 }

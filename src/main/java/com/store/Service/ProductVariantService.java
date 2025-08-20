@@ -60,7 +60,7 @@ public class ProductVariantService {
 
     public void showProductVariantForm() throws ServletException, IOException {
         List<Product> products = productDAO.listAll();
-        List<ProductDTO> productList = ProductMapper.INSTANCE.getProductDTOWithIdAndNameList(products);
+        List<ProductDTO> productList = ProductMapper.INSTANCE.toDTO(productDAO.loadIdAndName());
         request.setAttribute("productList", productList);
 
         Map<String, List<Attribute>> categorized = attributeDAO.categorizeAttributes();
@@ -281,5 +281,17 @@ public class ProductVariantService {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getWriter(), result);
+    }
+
+    public void showVariantsByProductIds() throws ServletException, IOException {
+        Integer productId = Integer.valueOf(request.getParameter("id"));
+
+        List<ProductVariantDTO> productVariants = ProductVariantMapper.INSTANCE.toDTOList(productVariantDAO.searchByProductId(productId));
+
+        request.setAttribute("productVariantList", productVariants);
+
+        String path = "product_variant_list.jsp";
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
+        requestDispatcher.forward(request, response);
     }
 }

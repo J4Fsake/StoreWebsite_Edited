@@ -252,21 +252,41 @@ public class CustomerService {
         return randomPassword;
     }
 
-    public void loginGoogle() {
+    public void loginGoogle() throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
         String code = request.getParameter("code");
-
+        System.out.println("code2:" + code);
         CustomerGoogleLogin gg = new CustomerGoogleLogin();
         try {
             String accessToken = gg.getToken(code);
+            System.out.println("Access Token: " + accessToken);
             if (accessToken != null) {
                 Customer customer = CustomerGoogleLogin.getUserInfo(accessToken);
+                System.out.println("Customer Info: " + customer.getEmail());
 
-                processOtherLogin(customer);
+                // Kiểm tra xem khách hàng đã tồn tại trong cơ sở dữ liệu chưa
+                Customer existingCustomer = customerDAO.findByEmail(customer.getEmail());
+                if (existingCustomer == null) {
+                    // Nếu khách hàng chưa tồn tại, tạo mới
+                    customerDAO.create(customer);
+                    request.setAttribute("customer", customer);
+                    CommonUtility.generateCountriesList(request);
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("frontend/customer_profile.jsp");
+                    requestDispatcher.forward(request, response);
+                } else {
+                    // Nếu khách hàng đã tồn tại, đăng nhập và hiển thị hồ sơ
+                    HttpSession session = request.getSession();
+                    session.setAttribute("loggedCustomer", existingCustomer);
+
+                    // Chép cart mới của khách hàng.
+                    request.setAttribute("customerId", existingCustomer.getId());
+                    request.getRequestDispatcher("frontend/confirmSaveCart.jsp").forward(request, response);
+                }
+//                processOtherLogin(customer);
             }
-        } catch (IOException | ServletException ignored) {
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

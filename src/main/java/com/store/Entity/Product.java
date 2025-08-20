@@ -23,7 +23,17 @@ import java.util.Date;
                         "GROUP BY p.id " +
                         "ORDER BY p.releasedDate DESC"
         ),
-        @NamedQuery(name = "Product.listByCategoryId", query = "SELECT p FROM Product p WHERE p.category.id = :categoryId")
+        @NamedQuery(name = "Product.listByCategoryId", query = "SELECT p FROM Product p WHERE p.category.id = :categoryId"),
+        @NamedQuery(name = "Product.getByIds", query = "SELECT p FROM Product p WHERE p.id IN :ids"),
+        @NamedQuery(
+                name = "Product.search",
+                query = "SELECT p " +
+                        "FROM Product p " +
+                        "WHERE p.name LIKE CONCAT('%', :keyword, '%') " +
+                        "OR p.brand LIKE CONCAT('%', :keyword, '%')"
+        ),
+        @NamedQuery(name = "Product.loadIdAndName", query = "SELECT p.id, p.name FROM Product p")
+
 })
 public class Product {
     @Id

@@ -44,9 +44,9 @@ public class CategoryService {
     }
 
     public void loadParentCategory() throws ServletException, IOException {
-        List<CategoryDTO> parentList = CategoryMapper.INSTANCE.toDTOList(categoryDAO.listAll());
+        List<CategoryDTO> groupList = CategoryMapper.INSTANCE.toDTOList(categoryDAO.loadGroupCategory());
 
-        request.setAttribute("parentList", parentList);
+        request.setAttribute("groupCategoryList", groupList);
 
         String path = "category_form.jsp";
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
@@ -68,10 +68,10 @@ public class CategoryService {
 
         CategoryDTO category = CategoryMapper.INSTANCE.toDTO(categoryDAO.get(categoryId));
 
-        List<CategoryDTO> parentList = CategoryMapper.INSTANCE.toDTOList(categoryDAO.listAll());
+        List<CategoryDTO> groupCategoryList = CategoryMapper.INSTANCE.toDTOList(categoryDAO.loadGroupCategory());
 
         request.setAttribute("category", category);
-        request.setAttribute("parentList", parentList);
+        request.setAttribute("groupCategoryList", groupCategoryList);
 
         String path = "category_form.jsp";
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);

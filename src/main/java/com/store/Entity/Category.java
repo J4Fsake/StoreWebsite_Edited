@@ -12,7 +12,14 @@ import javax.persistence.*;
         @NamedQuery(name = "Category.findAllUsedCategoryName", query = "SELECT c.name FROM Category c JOIN Product p ON c.id = p.category.id GROUP BY c.name ORDER BY c.name"),
         @NamedQuery(name = "Category.countChildrenByParentId", query = "SELECT COUNT(c) FROM Category c WHERE c.parent.id = :categoryId"),
         @NamedQuery(name = "Category.findByParentId", query = "SELECT c FROM Category c WHERE c.parent.id = :parentId"),
-        @NamedQuery(name = "Category.findRootCategories", query = "SELECT c FROM Category c WHERE c.parent IS NULL")
+        @NamedQuery(name = "Category.findRootCategories", query = "SELECT c FROM Category c WHERE c.parent IS NULL"),
+        @NamedQuery(name = "Category.loadGroupCategory", query = "SELECT c FROM Category c WHERE c.parent.id IS NULL"),
+        @NamedQuery(
+                name = "Category.loadParentCategory",
+                query = "SELECT c FROM Category c WHERE c.parent IS NOT NULL AND c.parent.parent IS NULL"
+        )
+
+
 })
 public class Category {
     @Id

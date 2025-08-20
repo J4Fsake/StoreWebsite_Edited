@@ -130,4 +130,16 @@ public class ImportService {
         out.flush();
         out.close();
     }
+
+    public void search() throws ServletException, IOException {
+        String id = request.getParameter("query");
+
+        List<ImportDTO> importList = ImportMapper.INSTANCE.toDTOList(importDAO.searchById(id));
+
+        request.setAttribute("importList", importList);
+
+        String path = "import_list.jsp";
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
+        requestDispatcher.forward(request, response);
+    }
 }

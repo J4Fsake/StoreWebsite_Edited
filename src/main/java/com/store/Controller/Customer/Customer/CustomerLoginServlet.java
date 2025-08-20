@@ -19,8 +19,20 @@ public class CustomerLoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        CustomerService customerService = new CustomerService(request, response);
-        customerService.processLogin();
+        String code = request.getParameter("code");
+        String state = request.getParameter("state");
+        System.out.println("Output code1: " + code);
+        System.out.println("Output state1: " + state);
+        if(code != null && !code.isEmpty() && state != null && state.equals("provider=google")) {
+            System.out.println("1");
+            processRequestGoogle(request, response);
+        }
+        else if(code != null && !code.isEmpty() && state != null && state.equals("provider=facebook")) {
+            processRequestFacebook(request, response);
+        } else {
+            CustomerService customerService = new CustomerService(request, response);
+            customerService.processLogin();
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -64,6 +76,18 @@ public class CustomerLoginServlet extends HttpServlet {
             e.printStackTrace();
         }
         return false;
+    }
+
+    //Google login
+    protected void processRequestGoogle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        CustomerService customerService = new CustomerService(request, response);
+        customerService.loginGoogle();
+    }
+
+    //Google login
+    protected void processRequestFacebook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        CustomerService customerService = new CustomerService(request, response);
+        customerService.loginFacebook();
     }
 
 }

@@ -1,19 +1,30 @@
 package Constant;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class Iconstant {
-    public static final String GOOGLE_CLIENT_ID = "734161680008-sol644a9hji09b12fe6hiev3p4f7cg74.apps.googleusercontent.com";
+    private static Properties props = new Properties();
 
-    public static final String GOOGLE_CLIENT_SECRET = "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";
+    static {
+        try {
+            FileInputStream fis = new FileInputStream(".env");
+            props.load(fis);
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public static final String GOOGLE_REDIRECT_URI = "http://localhost:9999/StoreWebsite/login";
+    public static final String GOOGLE_CLIENT_ID = props.getProperty("GOOGLE_CLIENT_ID");
+    public static final String GOOGLE_CLIENT_SECRET = props.getProperty("GOOGLE_CLIENT_SECRET");
+    public static final String GOOGLE_REDIRECT_URI = props.getProperty("GOOGLE_REDIRECT_URI");
+    public static final String GOOGLE_GRANT_TYPE = props.getProperty("GOOGLE_GRANT_TYPE");
+    public static final String GOOGLE_LINK_GET_TOKEN = props.getProperty("GOOGLE_LINK_GET_TOKEN");
+    public static final String GOOGLE_LINK_GET_USER_INFO = props.getProperty("GOOGLE_LINK_GET_USER_INFO");
 
-    public static final String GOOGLE_GRANT_TYPE = "authorization_code";
-
-    public static final String GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
-
-    public static final String GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
-
-    public static final String CSV_PATH = "D:\\MyDocuments\\File\\Web\\message.csv";
-
-    public static final String UPLOAD_DIRECTORY = "images/shirt";
+    public static final String CSV_PATH = props.getProperty("CSV_PATH");
+    public static final String UPLOAD_DIRECTORY = props.getProperty("UPLOAD_DIRECTORY");
+    public static final String FILE_TEMP_PATH = props.getProperty("FILE_TEMP_PATH");
 }

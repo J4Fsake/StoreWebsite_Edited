@@ -19,6 +19,8 @@ import java.util.Date;
         ),
 
         @NamedQuery(name = "Warehouse.findByVariantIds", query = "SELECT w FROM Warehouse w WHERE w.productVariant.id IN :ids"),
+        @NamedQuery(name = "Warehouse.searchByName", query = "SELECT w FROM Warehouse w WHERE w.productVariant.product.name LIKE CONCAT('%', :name, '%')"),
+        @NamedQuery(name = "Warehouse.searchByProductId", query = "SELECT w FROM Warehouse w WHERE w.productVariant.product.id = :productId")
 })
 public class Warehouse {
     @Id

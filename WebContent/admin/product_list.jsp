@@ -77,8 +77,10 @@
 							<td class="align-middle justify-content-center text-center"><f:formatDate pattern='dd/MM/yyyy' value='${product.releasedDate}'/></td>
 
 							<td class="align-middle justify-content-center text-center">
-								<a href="show_product_form?id=${product.id}" class="btn custom-btn-details">Edit</a>	&nbsp;
+								<a href="show_variant_detail?id=${product.id}" class="btn custom-btn-details">Variants</a>	&nbsp;
+								<a href="show_product_form?id=${product.id}" class="btn custom-btn-details">Edit</a>
 								<a href="javascript:void(0)" class="deleteLink btn custom-btn-delete" id="${product.id}">Delete</a> &nbsp;
+
 							</td>
 						</tr>
 					</c:forEach>

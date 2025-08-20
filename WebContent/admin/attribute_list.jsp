@@ -6,6 +6,7 @@
     <jsp:include page="pagehead.jsp"></jsp:include>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../css/custom_background_template.css"/>
     <link rel="stylesheet" type="text/css" href="../css/custom_row_template.css"/>
@@ -16,16 +17,27 @@
 
 <jsp:directive.include file="header.jsp"/>
 <jsp:include page="pageLoad.jsp"/>
-<div class="container mt-4" style="margin-top: 200px; margin-bottom: 200px;">
-    <div class="row text-center fw-bold mb-3">
-        <div class="col">Color</div>
-        <div class="col">Size</div>
-        <div class="col">Material</div>
-    </div>
-    <div class="row">
+
+<div class="container mt-5" style="margin-bottom: 200px;">
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="attrTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="color-tab" data-bs-toggle="tab" data-bs-target="#color" type="button" role="tab">Color</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="size-tab" data-bs-toggle="tab" data-bs-target="#size" type="button" role="tab">Size</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="material-tab" data-bs-toggle="tab" data-bs-target="#material" type="button" role="tab">Material</button>
+        </li>
+    </ul>
+
+    <!-- Tab Contents -->
+    <div class="tab-content p-3 border border-top-0" id="attrTabsContent">
 
         <!-- COLOR TABLE -->
-        <div class="col">
+        <div class="tab-pane fade show active" id="color" role="tabpanel">
             <table class="table table-bordered table-sm">
                 <thead><tr><th>ID</th><th>Value</th><th>Actions</th></tr></thead>
                 <tbody id="color-body">
@@ -49,7 +61,7 @@
         </div>
 
         <!-- SIZE TABLE -->
-        <div class="col">
+        <div class="tab-pane fade" id="size" role="tabpanel">
             <table class="table table-bordered table-sm">
                 <thead><tr><th>ID</th><th>Value</th><th>Actions</th></tr></thead>
                 <tbody id="size-body">
@@ -73,7 +85,7 @@
         </div>
 
         <!-- MATERIAL TABLE -->
-        <div class="col">
+        <div class="tab-pane fade" id="material" role="tabpanel">
             <table class="table table-bordered table-sm">
                 <thead><tr><th>ID</th><th>Value</th><th>Actions</th></tr></thead>
                 <tbody id="material-body">
@@ -97,6 +109,7 @@
         </div>
     </div>
 </div>
+
 <!-- SCRIPT -->
 <script>
     function showInput(domId) {
@@ -106,7 +119,6 @@
     function addAttr(domId, type) {
         const value = $("#" + domId + "-value").val().trim();
         if (!value) return alert("Value cannot be empty.");
-
         $.post("/StoreWebsite/admin/attribute_create", {type: type, value: value})
             .done(() => location.reload())
             .fail(() => alert("Failed to create attribute."));
@@ -114,7 +126,6 @@
 
     function deleteAttr(id, type, value) {
         if (!confirm("Are you sure to delete this attribute?")) return;
-
         $.post("/StoreWebsite/admin/attribute_delete", {id: id, type: type, value: value})
             .done(() => location.reload())
             .fail(() => alert("Delete failed."));
@@ -124,11 +135,9 @@
         const tr = $(btn).closest("tr");
         const id = tr.data("id");
         const oldValue = tr.data("value");
-
         const inputHtml =
             '<input type="text" class="form-control form-control-sm new-value" value="' + oldValue + '" />' +
             '<button class="btn btn-success btn-sm mt-1" onclick="saveEdit(this, ' + id + ', \'' + type + '\')">Save</button>';
-
         tr.find(".value-text").html(inputHtml);
         $(btn).hide();
     }
@@ -137,25 +146,24 @@
         const tr = $(saveBtn).closest("tr");
         const newValue = tr.find(".new-value").val().trim();
         if (!newValue) return alert("Value cannot be empty.");
-
         $.post("/StoreWebsite/admin/attribute_update", {id: id, type: type, value: newValue})
             .done(() => location.reload())
             .fail(() => alert("Update failed."));
     }
 </script>
+
 <script>
     window.addEventListener("load", () => {
         const loader = document.querySelector(".loader_wrapper");
-
         setTimeout(() => {
             loader.classList.add("loader-hidden");
-
             loader.addEventListener("transitionend", () => {
                 document.body.removeChild(loader);
             });
         }, 500);
     });
 </script>
+
 <jsp:directive.include file="footer.jsp"/>
 </body>
 </html>

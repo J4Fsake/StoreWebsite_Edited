@@ -7,6 +7,8 @@ public class ReportDTO {
     private Date end_date;
     private double total;
 
+    public ReportDTO() {}
+
     public ReportDTO(Date start_date, Date end_date, double total) {
         this.start_date = start_date;
         this.end_date = end_date;

@@ -63,4 +63,12 @@ public class CategoryDAO extends JPADAO<Category> implements GenericDAO<Category
     public List<Category> findRootCategories() {
         return super.findWithNamedQuery("Category.findRootCategories");
     }
+
+    public List<Category> loadGroupCategory() {
+        return super.findWithNamedQuery("Category.loadGroupCategory");
+    }
+
+    public List<Category> loadParentCategory() {
+        return super.findWithNamedQuery("Category.loadParentCategory");
+    }
 }

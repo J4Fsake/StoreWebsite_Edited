@@ -48,7 +48,8 @@
 <jsp:directive.include file="header.jsp"/>
 
 <div class="background-div-content">
-    <div class="container mt-5">
+
+    <div class="container mt-7">
         <!-- Shirt Details Section -->
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -98,6 +99,7 @@
                 </div>
             </div>
         </div>
+
         <br><br>
         <!-- Shirt Description Section -->
         <div class="row justify-content-center mb-5">
@@ -151,6 +153,15 @@
                 </div>
             </div>
         </div>
+
+        <div class="row justify-content-center mb-5 border custom-border">
+            <c:forEach var="recProduct" items="${relevantList}">
+                <div class="col-md-4 mt-5">
+                    <jsp:directive.include file="product_relevant.jsp"/>
+                </div>
+            </c:forEach>
+        </div>
+
     </div>
 </div>
 <jsp:directive.include file="footer.jsp"/>

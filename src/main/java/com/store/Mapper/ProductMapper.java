@@ -18,21 +18,4 @@ public interface ProductMapper {
     Product toEntity(ProductDTO dto);
 
     List<ProductDTO> toDTO(List<Product> list);
-
-    @Named("getProductDTOWithIdAndName")
-    @BeanMapping(ignoreByDefault = true)
-    @Mappings({
-            @Mapping(source = "id", target = "id"),
-            @Mapping(source = "name", target = "name")
-
-    })
-    ProductDTO getProductDTOWithIdAndName(Product entity);
-
-    default List<ProductDTO> getProductDTOWithIdAndNameList(List<Product> products) {
-        if (products == null) return null;
-
-        return products.stream()
-                .map(this::getProductDTOWithIdAndName)
-                .collect(Collectors.toList());
-    }
 }
